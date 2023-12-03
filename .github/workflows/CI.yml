@@ -15,7 +15,13 @@ jobs:
       - uses: yuzhiyongcn/setup-maven@v1.0.0
         with:
           maven-version: 3.8.2
-      
-      
-            
+       
       - run: mvn clean install
+      - uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+         file: "*.war"
+         tags: true
+         draft: true
+      
