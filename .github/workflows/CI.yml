@@ -6,7 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: aahmed-se/setup-maven@v3
+      - uses: yuzhiyongcn/setup-maven@v1.0.0
         with:
           maven-version: 3.8.2
+      
+      
+            
       - run: mvn clean install
