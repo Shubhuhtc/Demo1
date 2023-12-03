@@ -1,0 +1,12 @@
+name: Continuous Integration Workflow
+on:
+  workflow_dispatch:
+jobs:
+  run-Maven-Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aahmed-se/setup-maven@v3
+        with:
+          maven-version: 3.8.2
+      - run: mvn clean install
