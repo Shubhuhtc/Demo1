@@ -15,9 +15,6 @@ jobs:
          latest: true
          fileName: "hello-world-maven.war"
      - name: Copy file
-       uses: canastro/copy-action@0.0.2
-       with:
-         source: /home/finalopenshift/actions-runner/_work/Demo1/Demo1/hello-world-maven.war
-         target: /home/finalopenshift/stagingtomcat/apache-tomcat-8.5.96/webapps/   
+       run: cp /home/finalopenshift/actions-runner/_work/Demo1/Demo1/hello-world-maven.war /home/finalopenshift/stagingtomcat/apache-tomcat-8.5.96/webapps/.
 
      
