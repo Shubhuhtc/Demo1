@@ -17,5 +17,5 @@ jobs:
      - name: Copy file
        run: cp /home/finalopenshift/actions-runner/_work/Demo1/Demo1/hello-world-maven.war /home/finalopenshift/stagingtomcat/apache-tomcat-8.5.96/webapps/.
      - name: Starting Tomcat 
-       run: /home/finalopenshift/stagingtomcat/apache-tomcat-8.5.96/webapps/startup.sh
+       run: /home/finalopenshift/stagingtomcat/apache-tomcat-8.5.96/bin/startup.sh
      
