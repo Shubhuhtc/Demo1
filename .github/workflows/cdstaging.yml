@@ -19,6 +19,7 @@ jobs:
        name: Execute SSH commmands on remote server
        with:
         host: '${{ secrets.HOSTNAME }}'
+        user: azureuser
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: ls
     
