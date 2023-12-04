@@ -20,8 +20,8 @@ jobs:
        with:
         hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: |
-          ls
+        debug: true
+        command: ls
     
      
      - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
