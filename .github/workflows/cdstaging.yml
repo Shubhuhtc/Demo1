@@ -32,6 +32,7 @@ jobs:
         remote_host: ${{ secrets.HOSTNAME }}
         remote_user: ${{ secrets.REMOTE_USER }}
         remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
      
      - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
        name: Execute SSH commmands on remote server
@@ -41,4 +42,8 @@ jobs:
         command: |
           cd /home/ec2-user/apache-tomcat-9.0.83/bin
           ./startup.sh     
+     -  uses: actions/checkout@v2
+        with:
+          repository: Shubhuhtc/demotest
+          path: './bar'
           
