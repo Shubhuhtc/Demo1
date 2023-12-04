@@ -8,14 +8,18 @@ jobs:
   deploy_staging:
     environment: staging
     name: 'Deploy to staging'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
      - uses: robinraju/release-downloader@v1.8
        with:
          latest: true
          fileName: "hello-world-maven.war"
-     - name: Copy file
-       run: cp /home/finalopenshift/actions-runner/_work/Demo1/Demo1/hello-world-maven.war /home/finalopenshift/stagingtomcat/apache-tomcat-8.5.96/webapps/.
-     - name: Starting Tomcat 
-       run: /home/finalopenshift/stagingtomcat/apache-tomcat-8.5.96/bin/startup.sh
-     
+     - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
+       name: 'Deploy to production'
+       with:
+        switches: -avzr --delete
+        path: hello-world-maven.war
+        remote_path: hello-world-maven.war
+        remote_host: ${{ secrets.HOSTNAME }}
+        remote_user: ${{ secrets.REMOTE_USER }}
+        remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
