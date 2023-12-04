@@ -45,7 +45,8 @@ jobs:
      -  uses: actions/checkout@v2
         with:
           repository: Shubhuhtc/demotest
-     - run: ls -lrt      
+     - name: Execute ls command
+       run: ls -lrt      
           
      - uses: yuzhiyongcn/setup-maven@v1.0.0
        with:
