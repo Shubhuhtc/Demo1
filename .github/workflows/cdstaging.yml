@@ -8,28 +8,11 @@ jobs:
   deploy_staging:
     environment: staging
     name: 'Deploy to staging'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
      - uses: robinraju/release-downloader@v1.8
        with:
          latest: true
          fileName: "hello-world-maven.war"
 
-     - uses: nekiro/ssh-job@v1.0.5
-       name: Execute SSH commmands on remote server
-       with:
-        host: '${{ secrets.HOSTNAME }}'
-        user: azureuser
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: ls
-    
      
-     - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
-       name: 'Deploy to staging'
-       with:
-         switches: -avzr --delete
-         path: ./hello-world-maven.war
-         remote_path: /home/shub
-         remote_host: ${{ secrets.HOSTNAME }}
-         remote_user: ${{ secrets.REMOTE_USER }}
-         remote_key: ${{ secrets.SSH_PRIVATE_KEY }}    
