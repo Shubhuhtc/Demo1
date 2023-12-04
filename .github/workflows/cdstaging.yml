@@ -30,5 +30,13 @@ jobs:
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         command: |
           cd /home/ec2-user/apache-tomcat-9.0.83/bin
-          ./startup.sh
+          ./shutdown.sh
+     - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+       name: Execute SSH commmands on remote server
+       with:
+        hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+        command: |
+          cd /home/ec2-user/apache-tomcat-9.0.83/bin
+          ./startup.sh     
           
