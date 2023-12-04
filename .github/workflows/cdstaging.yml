@@ -46,10 +46,10 @@ jobs:
         with:
           repository: Shubhuhtc/demotest
      - name: Execute ls command
-       run: ls -lrt      
+       run: ls -lrt & pwd
           
-     - uses: yuzhiyongcn/setup-maven@v1.0.0
-       with:
-         maven-version: 3.8.2
-     - run: mvn test 
+    # - uses: yuzhiyongcn/setup-maven@v1.0.0
+    #   with:
+    #     maven-version: 3.8.2
+    # - run: mvn test 
           
