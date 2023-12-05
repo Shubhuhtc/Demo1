@@ -19,5 +19,5 @@ jobs:
        with:
           ssh-private-key: ${{ SSH_PRIVATE_KEY }}
 
-      - name: Copy Files to Azure VM
-        run: scp -o StrictHostKeyChecking=no -r hello-world-maven.war ${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}:/opt/tomcat
+     - name: Copy Files to Azure VM
+       run: scp -o StrictHostKeyChecking=no -r hello-world-maven.war ${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}:/opt/tomcat
