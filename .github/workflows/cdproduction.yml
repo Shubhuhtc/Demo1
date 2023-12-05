@@ -23,6 +23,16 @@ jobs:
      #     cd /home/ec2-user/production/apache-tomcat-9.0.83/bin
      #     ./shutdown.sh
      
+    
+     - name: Set up SSH
+       uses: webfactory/ssh-agent@v0.5.5
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Copy Files to Azure VM
+        run: scp -o StrictHostKeyChecking=no -r hello-world-maven.war ${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}:/home/azureuse
+     
+     
      - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
        name: 'Deploy to production'
        with:
