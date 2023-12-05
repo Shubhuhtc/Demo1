@@ -42,19 +42,14 @@ jobs:
         command: |
           cd /home/ec2-user/apache-tomcat-9.0.83/bin
           ./startup.sh     
-     - name: Setup Chrome
-       uses: browser-actions/setup-chrome@v1.4.0
+     - name: Setup Python
+       uses: actions/setup-python@v4.7.1
        with:
-         chrome-version: 114
-     
+         python-version: '3.10'
+     - run: pip install requests beautifulsoup4
+    
+         
      -  uses: actions/checkout@v2
         with:
           repository: Shubhuhtc/demotest
-     - name: Execute ls command
-       run: ls -lrt & pwd & chmod -R 755 ./ & mvn test
-          
-     - uses: yuzhiyongcn/setup-maven@v1.0.0
-       with:
-         maven-version: 3.8.2
-     - run: mvn test 
-          
+     
