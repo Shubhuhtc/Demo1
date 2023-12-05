@@ -52,4 +52,6 @@ jobs:
      -  uses: actions/checkout@v2
         with:
           repository: Shubhuhtc/demotest
+     -  run: python3 web_text_checker.py
+    
      
