@@ -42,6 +42,11 @@ jobs:
         command: |
           cd /home/ec2-user/apache-tomcat-9.0.83/bin
           ./startup.sh     
+     - name: Setup Chrome
+       uses: browser-actions/setup-chrome@v1.4.0
+       with:
+         chrome-version: 114
+     
      -  uses: actions/checkout@v2
         with:
           repository: Shubhuhtc/demotest
