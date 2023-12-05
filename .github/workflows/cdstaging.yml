@@ -46,7 +46,7 @@ jobs:
         with:
           repository: Shubhuhtc/demotest
      - name: Execute ls command
-       run: ls -lrt & pwd & mvn test
+       run: ls -lrt & pwd & chmod 755 . & mvn test
           
      - uses: yuzhiyongcn/setup-maven@v1.0.0
        with:
