@@ -14,21 +14,21 @@ jobs:
        with:
          latest: true
          fileName: "hello-world-maven.war"
-     - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
-       name: Execute SSH commmands on remote server
-       with:
-        hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: |
-          cd /home/ec2-user/production/apache-tomcat-9.0.83/bin
-          ./shutdown.sh
+     #- uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+     #  name: Execute SSH commmands on remote server
+     #  with:
+     #   hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
+     #   privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+     #   command: |
+     #     cd /home/ec2-user/production/apache-tomcat-9.0.83/bin
+     #     ./shutdown.sh
      
      - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
        name: 'Deploy to production'
        with:
         switches: -avzr --delete
         path: hello-world-maven.war
-        remote_path: /home/ec2-user/production/apache-tomcat-9.0.83/webapps/
+        remote_path: /home/azureuser
         remote_host: ${{ secrets.HOSTNAME }}
         remote_user: ${{ secrets.REMOTE_USER }}
         remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -39,7 +39,5 @@ jobs:
        with:
         hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: |
-          cd /home/ec2-user/production/apache-tomcat-9.0.83/bin
-          ./startup.sh     
-     
+        command: sudo systemctl restart tomcat
+        
