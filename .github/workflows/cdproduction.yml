@@ -1,11 +1,11 @@
-name: Staging Deployment Workflow
+name: Production Deployment Workflow
 on:
   workflow_dispatch:
 defaults:
   run:
     shell: bash     
 jobs:
-  deploy_staging:
+  deploy_production:
     environment: production
     name: 'Deploy to Production'
     runs-on: ubuntu-latest
