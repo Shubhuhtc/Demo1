@@ -5,19 +5,53 @@ defaults:
   run:
     shell: bash     
 jobs:
-  deploy_production:
-    environment: production
-    name: 'Deploy to Production'
+  deploy_staging:
+    environment: staging
+    name: 'Deploy to staging'
     runs-on: ubuntu-latest
     steps:
      - uses: robinraju/release-downloader@v1.8
        with:
          latest: true
          fileName: "hello-world-maven.war"
-     - name: Set up SSH
-       uses: webfactory/ssh-agent@v0.8.0
+     - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+       name: Execute SSH commmands on remote server
        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-     - name: Copy Files to Azure VM
-       run: scp -o StrictHostKeyChecking=no -r hello-world-maven.war ${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}:/opt/tomcat
+        hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+        command: |
+          cd /home/ec2-user/apache-tomcat-9.0.83/bin
+          ./shutdown.sh
+     
+     - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
+       name: 'Deploy to production'
+       with:
+        switches: -avzr --delete
+        path: hello-world-maven.war
+        remote_path: /home/ec2-user/apache-tomcat-9.0.83/webapps/
+        remote_host: ${{ secrets.HOSTNAME }}
+        remote_user: ${{ secrets.REMOTE_USER }}
+        remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+     
+     - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+       name: Execute SSH commmands on remote server
+       with:
+        hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+        command: |
+          cd /home/ec2-user/apache-tomcat-9.0.83/bin
+          ./startup.sh     
+     - name: Setup Python
+       uses: actions/setup-python@v4.7.1
+       with:
+         python-version: '3.10'
+     - run: pip install requests beautifulsoup4
+    
+         
+     -  uses: actions/checkout@v2
+        with:
+          repository: Shubhuhtc/demotest
+     -  run: python3 web_text_checker.py
+    
+     
