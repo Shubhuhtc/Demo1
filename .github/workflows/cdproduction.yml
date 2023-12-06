@@ -6,8 +6,8 @@ defaults:
     shell: bash     
 jobs:
   deploy_staging:
-    environment: staging
-    name: 'Deploy to staging'
+    environment: production
+    name: 'Deploy to Production'
     runs-on: ubuntu-latest
     steps:
      - uses: robinraju/release-downloader@v1.8
