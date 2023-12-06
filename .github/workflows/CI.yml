@@ -4,9 +4,7 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main    
+    
 jobs:
   run-Maven-Build:
     runs-on: ubuntu-latest
