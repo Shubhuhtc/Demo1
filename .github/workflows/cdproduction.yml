@@ -28,7 +28,7 @@ jobs:
        with:
         switches: -avzr --delete
         path: hello-world-maven.war
-        remote_path: /opt/tomcat/webapps/
+        remote_path: /var/lib/tomcat9/webapps
         remote_host: ${{ secrets.HOSTNAME }}
         remote_user: ${{ secrets.REMOTE_USER }}
         remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -39,6 +39,6 @@ jobs:
        with:
         hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: sudo systemctl restart tomcat
+        command: sudo systemctl restart tomcat9
      
      
