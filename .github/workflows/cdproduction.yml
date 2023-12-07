@@ -41,4 +41,15 @@ jobs:
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         command: sudo systemctl restart tomcat9
      
-     
+     - name: Setup Python
+       uses: actions/setup-python@v4.7.1
+       with:
+         python-version: '3.10'
+     - run: pip install requests beautifulsoup4
+    
+         
+     -  uses: actions/checkout@v2
+        with:
+          repository: Shubhuhtc/demotest
+     -  run: python3 web_text_checker.py
+    
