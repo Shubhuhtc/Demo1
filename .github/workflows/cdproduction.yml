@@ -69,7 +69,7 @@ jobs:
           JIRA_ISSUE_DESCRIPTION: Demo
           JIRA_ISSUE_SUMMARY: Demo
           JIRA_ISSUE_TYPE: Task
-          JIRA_PROJECT: DEM
+          JIRA_PROJECT: DemoProject
           JIRA_USERNAME: finalopenshift@gmail.com
   
   jira_login:
