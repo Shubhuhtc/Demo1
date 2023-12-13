@@ -53,6 +53,23 @@ jobs:
           repository: Shubhuhtc/demotest
      -  run: python3 web_text_checker.py
     
+  
+  
+  jiraIssueCreation:
+    name: Jira Issue Creation Demo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Jira Creation Demo
+        uses: bryannice/gitactions-jira-issue-creation@master
+        env:
+          JIRA_ACCOUNT_URL: https://shubhu.atlassian.net
+          JIRA_API_TOKEN: ATATT3xFfGF0EXmEjFFnvJWzkj1DB0Gah_CNEsUQQ_l6x-b8kS5ydEcV-OUFgzf9cy4bpEik-cwXAikZWnV-Y09weifWLv0hEamofO-zpqg5YT2MX5nZosYaogO7eVP0eH5lK2stDG9VDLGZHLDvqQi8E1dq_Rd5W33jIJ-_ZL63hNaTR2osu44=C3333C6A
+          JIRA_ISSUE_DESCRIPTION: Demo'ing Jira Issue Creation
+          JIRA_ISSUE_SUMMARY: Demo'ing Jira Issue Creation
+          JIRA_ISSUE_TYPE: Task
+          JIRA_PROJECT: DEM
+          JIRA_USERNAME: finalopenshift@gmail.com
+  
   jira_login:
     name: Jira Issue Create
     environment: production
