@@ -53,13 +53,31 @@ jobs:
           repository: Shubhuhtc/demotest
      -  run: python3 web_text_checker.py
     
+  jira_login:
+    name: Jira Example
+    needs: deploy_staging
+    if: failure() && github.event.pull_request == null
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login
+      uses: atlassian/gajira-login@v3
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+  
+  
   notify:
     name: Notify failed build
     needs: deploy_staging
     if: failure() && github.event.pull_request == null
     runs-on: ubuntu-latest
     steps:
-      - uses: jayqi/failed-build-issue-action@v1
+      - uses: atlassian/gajira-todo@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-    
+          project: DEM
+          issuetype: Task
+          description: Build Job Failed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
