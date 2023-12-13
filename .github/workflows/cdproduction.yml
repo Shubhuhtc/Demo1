@@ -54,7 +54,7 @@ jobs:
      -  run: python3 web_text_checker.py
     
   jira_login:
-    name: Jira Example
+    name: Jira Issue Create
     environment: production
     needs: deploy_staging
     if: failure() && github.event.pull_request == null
@@ -68,18 +68,12 @@ jobs:
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
   
   
-  notify:
-    name: Notify failed build
-    environment: production
-    needs: deploy_staging
-    if: failure() && github.event.pull_request == null
-    runs-on: ubuntu-latest
-    steps:
-      - uses: atlassian/gajira-todo@v3
-        with:
-          project: DEM
-          issuetype: Task
-          description: Build Job Failed
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Notify failed build
+      uses: atlassian/gajira-todo@v3
+      with:
+        project: DEM
+        issuetype: Task
+        description: Build Job Failed
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
