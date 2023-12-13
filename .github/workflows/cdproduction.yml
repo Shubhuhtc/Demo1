@@ -55,6 +55,7 @@ jobs:
     
   jira_login:
     name: Jira Example
+    environment: production
     needs: deploy_staging
     if: failure() && github.event.pull_request == null
     runs-on: ubuntu-latest
@@ -69,6 +70,7 @@ jobs:
   
   notify:
     name: Notify failed build
+    environment: production
     needs: deploy_staging
     if: failure() && github.event.pull_request == null
     runs-on: ubuntu-latest
