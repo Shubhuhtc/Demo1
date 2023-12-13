@@ -88,10 +88,11 @@ jobs:
   
   
     - name: Notify failed build
-      uses: atlassian/gajira-todo@v3
+      uses: tomhjp/gh-action-jira-create@v0.1.3
       with:
         project: DEM
         issuetype: Task
+        summary: Demo 
         description: Build Job Failed
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
