@@ -6,29 +6,29 @@ defaults:
     shell: bash     
 jobs:
   deploy_staging:
-    environment: staging
-    name: 'Deploy to staging'
+    environment: production
+    name: 'Deploy to Production'
     runs-on: ubuntu-latest
     steps:
      - uses: robinraju/release-downloader@v1.8
        with:
          latest: true
          fileName: "hello-world-maven.war"
-     - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
-       name: Execute SSH commmands on remote server
-       with:
-        hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: |
-          cd /home/ec2-user/apache-tomcat-9.0.83/bin
-          ./shutdown.sh
+     #- uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+     #  name: Execute SSH commmands on remote server
+     #  with:
+     #   hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
+     #   privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+     #   command: |
+     #     cd /home/ec2-user/apache-tomcat-9.0.83/bin
+     #     ./shutdown.sh
      
      - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
        name: 'Deploy to production'
        with:
         switches: -avzr --delete
         path: hello-world-maven.war
-        remote_path: /home/ec2-user/apache-tomcat-9.0.83/webapps/
+        remote_path: /var/lib/tomcat9/webapps
         remote_host: ${{ secrets.HOSTNAME }}
         remote_user: ${{ secrets.REMOTE_USER }}
         remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -39,9 +39,8 @@ jobs:
        with:
         hosts: '${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: |
-          cd /home/ec2-user/apache-tomcat-9.0.83/bin
-          ./startup.sh     
+        command: sudo systemctl restart tomcat9
+     
      - name: Setup Python
        uses: actions/setup-python@v4.7.1
        with:
@@ -54,4 +53,47 @@ jobs:
           repository: Shubhuhtc/demotest
      -  run: python3 web_text_checker.py
     
-     
+  
+  
+  jiraIssueCreation:
+    name: Jira Issue Creation Demo
+    needs: deploy_staging
+    if: failure() && github.event.pull_request == null
+    runs-on: ubuntu-latest
+    steps:
+      - name: Jira Creation Demo
+        uses: bryannice/gitactions-jira-issue-creation@master
+        env:
+          JIRA_ACCOUNT_URL: https://shubhu.atlassian.net
+          JIRA_API_TOKEN: ADGHHFJKHKTATT3xFfGF0EXmEjkkkkkFFnvJWzkj1DB0Gah_CNEsUQQ_l6x-b8kS5ydEcV-OUFgzf9cy4bpEik-cwXAikZWnV-Y09weifWLv0hEamofO-zpqg5YT2MX5nZosYaogO7eVP0eH5lK2stDG9VDLGZHLDvqQi8E1dq_Rd5W33jIJ-_ZL63hNaTR2osu44=C3333C6A
+          JIRA_ISSUE_DESCRIPTION: Demo
+          JIRA_ISSUE_SUMMARY: Demo
+          JIRA_ISSUE_TYPE: Task
+          JIRA_PROJECT: DemoProject
+          JIRA_USERNAME: finalopenshift@gmail.com
+  
+  jira_login:
+    name: Jira Issue Create
+    environment: production
+    needs: deploy_staging
+    if: failure() && github.event.pull_request == null
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login
+      uses: atlassian/gajira-login@v3
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+  
+  
+    - name: Notify failed build
+      uses: tomhjp/gh-action-jira-create@v0.1.3
+      with:
+        project: DEM
+        issuetype: Task
+        summary: Demo 
+        description: Build Job Failed
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
